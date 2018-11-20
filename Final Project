@@ -1,0 +1,134 @@
+sp_rename 'agerutshang.finaltable.BPAlerts','BP Status','COLUMN'
+
+update agerutshang.finaltable 
+set [BP Status]='Controlled blood pressure' where [BP Status]='Hypo1'
+update agerutshang.finaltable 
+set [BP Status]='Controlled blood pressure' where [BP Status]='Normal'
+update agerutshang.finaltable 
+set [BP Status]='Uncontrolled blood pressure' where [BP Status]='Hypo2'
+update agerutshang.finaltable 
+set [BP Status]='Uncontrolled blood pressure' where [BP Status]='HTN1'
+update agerutshang.finaltable 
+set [BP Status]='Uncontrolled blood pressure' where [BP Status]='HTN2'
+update agerutshang.finaltable 
+set [BP Status]='Uncontrolled blood pressure' where [BP Status]='HTN3'
+
+update agerutshang.finaltable 
+set [BP Status]='1' where [BP Status]='Controlled blood pressure'
+update agerutshang.finaltable 
+set [BP Status]='0' where [BP Status]='Uncontrolled blood pressure'
+
+select * into agerutshang.final
+from agerutshang.finaltable A
+inner join 
+Demographics B
+on A.ID=B.contactid
+
+delete from agerutshang.final
+where [BP Status]='NULL'
+
+alter table agerutshang.final alter column [BP Status] int
+
+select  avg ([BP Status]), ID
+from agerutshang.final 
+where ObservedTime between '2016-05-01' and '2016-05-07'
+group by ID 
+
+select avg ([BP Status]), ID 
+from agerutshang.final 
+where ObservedTime between '2016-05-08' and '2016-05-14'
+group by ID
+
+select avg ([BP Status]), ID 
+from agerutshang.final
+where ObservedTime between '2016-05-15' and '2016-05-21'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-05-22' and '2016-05-28'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-05-29' and '2016-06-04'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-06-05' and '2016-06-11'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-06-12' and '2016-06-18'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-06-19' and '2016-06-25'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-06-26' and '2016-07-02'
+group by ID 
+
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-07-03' and '2016-07-09'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-07-10' and '2016-07-16'
+group by ID 
+
+select avg([BP Status]), ID
+from agerutshang.final
+where ObservedTime between '2016-07-17' and '2016-07-23'
+group by ID 
+
+select * into agerutshang.compiledtable
+from Demographics A
+inner join 
+ChronicConditions B
+on A.contactid=B.tri_patientid
+inner join 
+[Text] C
+on A.contactid=C.tri_contactId
+
+select contactid as uniquecontact, max(TextSentDate) as LatestText into agerutshang.latesttext
+from agerutshang.compiledtable 
+group by contactid
+
+select * into agerutshang.recenttextdates
+from agerutshang.latesttext A
+inner join 
+agerutshang.compiledtable B
+on A.uniquecontact=B.contactid
+
+alter table agerutshang.recenttextdates
+drop column contactid
+alter table agerutshang.recenttextdates
+drop column LatestText
+
+Code in R:
+install.packages("RODBC")
+library(RODBC)
+
+mycom <- odbcConnect("dartmouth1","agerutshang","agerutshang@qbs181")
+Demographics <- sqlQuery(mycom, "select * from Demographics")
+ChronicConditions<-sqlQuery(mycom,"select * from ChronicConditions")
+Text<-sqlQuery(mycom,"select * from Text")
+
+Demographics<-Demographics[,-(9:15)]
+
+DemChron<-merge(Demographics,ChronicConditions,by.x="contactid",by.y="tri_patientid")
+
+trio<-merge(DemChron,Text,by.x="contactid",by.y="tri_contactId")
+
+a<-trio%>%group_by(contactid)%>%filter(TextSentDate==max(TextSentDate))
+
+

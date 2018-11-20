@@ -2,7 +2,7 @@
 
 The purpose of this repository is to share the projects that I have completed in my Data Wrangling course this semester.
 
-I have received permission to share all the work in this repository. 
+The codes presented in this repository have been approved for sharing by the instructor for this course. 
 
 The following content briefly lists the tasks that were completed in each individual project. 
 
@@ -33,5 +33,10 @@ Project Midterm in R and SQL:
 - computing counts for different variables to compare to information from data source 
 - deleting rows that were mostly missing values (thus, insignificantly contributing to dataset) 
 
+Project Final in R and SQL with blood pressure dataset: 
+- Rename factor levels with description of the data they represent 
+- combine tables to obtain information on intervention programs 
+- find average weekly values for intervention data to track change over time 
+- combine tables and extract most recent value based on sent date (in both SQL and R, using ODBC driver) 
 
 

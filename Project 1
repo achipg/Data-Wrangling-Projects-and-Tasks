@@ -1,0 +1,68 @@
+
+
+select * into agerutshang.demo2 from Demographics
+sp_RENAME 'agerutshang.demo2.tri_age' , 'Age', 'COLUMN' 
+sp_RENAME 'agerutshang.demo2.GenderCode', 'Gender', 'COLUMN'
+sp_RENAME 'agerutshang.demo2.ContactID', 'ID', 'COLUMN'
+sp_RENAME 'agerutshang.demo2.address1_stateorprovince', 'State', 'COLUMN'
+sp_RENAME 'agerutshang.demo2.tri_imaginecareenrollmentemailsentdate', 'EmailSentdate', 'COLUMN'
+sp_RENAME 'agerutshang.demo2.tri_enrollmentcompletedate', 'Completedate', 'COLUMN'
+alter table agerutshang.demo2
+add Daysforcompletion as datediff(day, try_convert(date,EmailSentdate),try_convert(date,Completedate))
+select top 10 * from agerutshang.demo2
+
+
+
+alter table agerutshang.demo2 add EnrollmentStatus nvarchar (225)
+update agerutshang.demo2
+set EnrollmentStatus='Complete' where tri_imaginecareenrollmentstatus=167410011
+update agerutshang.demo2
+set EnrollmentStatus='Email Sent' where tri_imaginecareenrollmentstatus=167410001
+update agerutshang.demo2
+set EnrollmentStatus='Non responder' where tri_imaginecareenrollmentstatus=167410004
+update agerutshang.demo2
+set EnrollmentStatus='Facilitated Enrollment' where tri_imaginecareenrollmentstatus=167410005
+update agerutshang.demo2
+set EnrollmentStatus='Incomplete Enrollments' where tri_imaginecareenrollmentstatus=167410002
+update agerutshang.demo2
+set EnrollmentStatus='Opted out' where tri_imaginecareenrollmentstatus=167410003
+update agerutshang.demo2
+set EnrollmentStatus='Unprocessed' where tri_imaginecareenrollmentstatus=167410000
+update agerutshang.demo2
+set EnrollmentStatus='Second email' where tri_imaginecareenrollmentstatus=167410006
+select top 10 * from agerutshang.demo2
+
+alter table agerutshang.demo2 add Sex nvarchar(20)
+update agerutshang.demo2 
+set Sex='female' where Gender='2'
+update agerutshang.demo2
+set Sex='male' where Gender='1'
+update agerutshang.demo2
+set Sex='other' where Gender='167410000'
+update agerutshang.demo2
+set Sex='Unknown' where Gender='NULL'
+select top 10 * from agerutshang.demo2 where Daysforcompletion is not NULL
+
+
+alter table agerutshang.demo2 add AgeGroup nvarchar (10) 
+update agerutshang.demo2
+set AgeGroup='0-25' where Age between 0 and 25 
+update agerutshang.demo2
+set AgeGroup='26-30' where Age between 26 and 30
+update agerutshang.demo2
+set AgeGroup='31-45' where Age between 31 and 45
+update agerutshang.demo2
+set AgeGroup='46-60' where Age between 46 and 60 
+update agerutshang.demo2
+set AgeGroup='61-75' where Age between 61 and 75
+update agerutshang.demo2
+set AgeGroup='76-90' where Age between 76 and 90
+update agerutshang.demo2
+set AgeGroup='>90' where Age>90
+select top 10 * from agerutshang.demo2 where Daysforcompletion is not NULL
+
+
+
+
+
+ 

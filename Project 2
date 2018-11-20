@@ -143,5 +143,3 @@ select min (TextSentDate) value from agerutshang.demo9
 where tri_name='Congestive Heart Failure'
 select datediff(week,'2016/03/15','2017/02/03')
 
-
-

@@ -1,0 +1,159 @@
+Code in R: 
+
+install.packages("Hmisc")
+install.packages("SASxport")
+library(SASxport)
+library (plyr)
+library(dplyr)
+table<-read.xport("DIQ_I.XPT")
+write.csv(table,"sqlmidterm.csv")
+
+
+colnames(table)[colnames(table)=="SEQN"] <- "respondersequencenumber"
+colnames(table)[colnames(table)=="DIQ010"] <- "DoctorDiagnosedDiabetes"
+colnames(table)[colnames(table)=="DID040"]<-"Age_Diagnosis"
+colnames(table)[colnames(table)=="DIQ160"]<-"Prediabetes_diagnosis"
+colnames(table)[colnames(table)=="DIQ170"]<-"HealthRiskforDiabetes"
+colnames(table)[colnames(table)=="DIQ172"]<-"FeelAtRisk"
+colnames(table)[colnames(table)=="DIQ180"]<-"bloodtest3years"
+colnames(table)[colnames(table)=="DIQ050"]<-"currentInsulinUse"
+colnames(table)[colnames(table)=="DID060"]<-"TimetakingInsulin"
+colnames(table)[colnames(table)=="DIQ060U"]<-"unitmeasure"
+colnames(table)[colnames(table)=="DIQ070"]<-"medsforbloodsugar"
+colnames(table)[colnames(table)=="DIQ230"]<-"timeSinceDiab_specialistvisit"
+colnames(table)[colnames(table)=="DIQ240"]<-"OneDoctorforDiabetes"
+colnames(table)[colnames(table)=="DID250"]<-"dr_visitsinpastyear"
+colnames(table)[colnames(table)=="DID260"]<-"timesbloodsugarchecked"
+colnames(table)[colnames(table)=="DIQ260U"]<-"unitmeasureforbloodsugarcheck"
+colnames(table)[colnames(table)=="DIQ275"]<-"dr_checkA1Cpastyear"
+colnames(table)[colnames(table)=="DIQ280"]<-"lastA1Clevel"
+colnames(table)[colnames(table)=="DIQ291"]<-"dr_recommendedA1C"
+colnames(table)[colnames(table)=="DIQ300S"]<-"recentSBP"
+colnames(table)[colnames(table)=="DIQ300D"]<-"recentDBP"
+colnames(table)[colnames(table)=="DID310S"]<-"dr_recommendedSBP"
+colnames(table)[colnames(table)=="DID310D"]<-"dr_recommendedDBP"
+colnames(table)[colnames(table)=="DID320"]<-"latestLDLnumber"
+colnames(table)[colnames(table)=="DID330"]<-"dr_recommendedLDL"
+colnames(table)[colnames(table)=="DID341"]<-"drcheckforfeetsore_pastyear"
+colnames(table)[colnames(table)=="DID350"]<-"timesSelfcheckfeet"
+colnames(table)[colnames(table)=="DIQ350U"]<-"unitmeasure_feetcheck"
+colnames(table)[colnames(table)=="DIQ360"]<-"latestpupildilationduringexam"
+colnames(table)[colnames(table)=="DIQ080"]<-"diabetes_eyeproblemORretinopathy"
+
+table[,c(2,4:32,34:37,40:41,43,52:54)]<-lapply(table[,c(2,4:32,34:37,40:41,43,52:54)], factor)
+
+table$DoctorDiagnosedDiabetes<- factor(table$DoctorDiagnosedDiabetes,
+levels = c(1,2,3,7,9),
+labels = c("yes", "no", "Borderline","refused","Don't know"))
+table$Prediabetes_diagnosis<- factor(table$Prediabetes_diagnosis,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$HealthRiskforDiabetes<- factor(table$HealthRiskforDiabetes,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$FeelAtRisk<- factor(table$FeelAtRisk,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$bloodtest3years<- factor(table$bloodtest3years,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$currentInsulinUse<- factor(table$currentInsulinUse,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$medsforbloodsugar<- factor(table$medsforbloodsugar,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$timeSinceDiab_specialistvisit<-factor(table$timeSinceDiab_specialistvisit,
+levels=c(1,2,3,4,5,7,9),
+labels=c("1 year or less","> than 1 but not more than 2 years",">2 but not more than 5 years",
+">5 years","never","refused","Don't know"))
+table$OneDoctorforDiabetes<- factor(table$OneDoctorforDiabetes,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$dr_checkA1Cpastyear<- factor(table$dr_checkA1Cpastyear,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+table$dr_recommendedA1C<- factor(table$dr_recommendedA1C,
+levels = c(1,2,3,4,5,6,77,99),
+labels = c("<6", "<7","<8", "<9","<10","Provider didn't specify","Refused", "Don't know"))
+table$latestpupildilationduringexam<- factor(table$latestpupildilationduringexam,
+levels = c(1,2,3,4,5,7,9),
+labels = c("<1 month", "1-12 months","13-24 months",">2 years","Never","refused","Don't know"))
+table$diabetes_eyeproblemORretinopathy<- factor(table$diabetes_eyeproblemORretinopathy,
+levels = c(1,2,7,9),
+labels = c("yes", "no","refused","Don't know"))
+
+table$Age_Diagnosis[table$Age_Diagnosis==80]<-90
+table$Age_Diagnosis[table$Age_Diagnosis==666]<-0.5
+mean(table$Age_Diagnosis[table$Age_Diagnosis>0 & table$Age_Diagnosis<=90],na.rm=TRUE)
+
+table$TimetakingInsulin_months[table$TimetakingInsulin_months==666]<-0.5
+mean(table$TimetakingInsulin_months
+[table$TimetakingInsulin_months>=0.5
+& table$TimetakingInsulin_months<=55],na.rm=TRUE)
+
+mean(table$dr_visitsinpastyear[table$dr_visitsinpastyear>=0
+& table$dr_visitsinpastyear<=60],na.rm=TRUE)
+
+table$timesSelfcheckfeet<-table$timesSelfcheckfeet*
+ifelse(table$unitmeasure_feetcheck=="1",365,
+ifelse(table$unitmeasure_feetcheck=="2",52.143,
+ifelse(table$unitmeasure_feetcheck=="3",12,
+ifelse(table$unitmeasure_feetcheck=="4",1,0))))
+colnames(table)[colnames(table)=="timesSelfcheckfeet"]<-"timesSelfcheckfeet_peryear"
+table<-table[,c(-51)]
+table$timesbloodsugarchecked<-table$timesbloodsugarchecked*
+ifelse(table$unitmeasureforbloodsugarcheck=="1",365,
+ifelse(table$unitmeasureforbloodsugarcheck=="2",52.143,
+ifelse(table$unitmeasureforbloodsugarcheck=="3",12,
+ifelse(table$unitmeasureforbloodsugarcheck=="4",1,0))))
+colnames(table)[colnames(table)=="timesbloodsugarchecked"]<-"timesbloodsugarchecked_peryear"
+table<-table[,c(-39)]
+
+length(table$respondersequencenumber)
+count(table,'DoctorDiagnosedDiabetes')
+count(table,'Prediabetes_diagnosis')
+length(table$timesSelfcheckfeet_peryear)
+count(table,'latestpupildilationduringexam')
+count(table,'diabetes_eyeproblemORretinopathy')
+
+length(table$respondersequencenumber)
+count(table,'DoctorDiagnosedDiabetes')
+count(table,'Prediabetes_diagnosis')
+length(table$timesSelfcheckfeet_peryear)
+count(table,'latestpupildilationduringexam')
+count(table,'diabetes_eyeproblemORretinopathy')
+
+empty<-subset(table, DoctorDiagnosedDiabetes=="no"
+& is.na(table$Age_Diagnosis)
+& is.na(table$Prediabetes_diagnosis)
+& is.na(table$HealthRiskforDiabetes))
+table<-setdiff(table,empty)
+
+part<-table[,c(7:30)]
+pnew<-t(apply(part, 1, sort, na.last = T))
+colSums(is.na(pnew))
+final<-pnew[,c(-(16:24))]
+colSums(is.na(final))
+back<-data.frame(final)
+fin<-cbind(table,back)
+fin2<-fin[,c(-(7:30))]
+fin2<- fin2[,c(1:6,28:42,7:27)]
+table<-fin2
+
+table$reasonforrisk_1<- factor(table$reasonforrisk_1,
+levels = c(10,77,99,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33),
+labels = c("Family history",
+"Refused",
+"Don't know",
+"overweight",
+"Age","poor diet","race",
+"had baby >9lbs at birth",
+"lack of physical activity",
+"high BP","high blood sugar",
+"high cholesterol","hypoglycemic",
+"extreme hunger","tingling/numbness in hands or feet",
+"blurred vision","increased fatigue","anyone could be at risk",
+"doctor warning","other,specify","gestational diabetes",
+"frequent urination","thirst","craving sweet/eating lots of sugar",
+"medication","PCOS"))

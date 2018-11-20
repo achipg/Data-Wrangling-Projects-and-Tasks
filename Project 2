@@ -1,0 +1,147 @@
+select * into agerutshang.demo3 from PhoneCall 
+alter table agerutshang.demo3 add [Enrollment Group] nvarchar (225)
+select top 10 * from agerutshang.demo3
+update agerutshang.demo3
+set [Enrollment Group]='Clinical Alert' where EncounterCode=125060000
+update agerutshang.demo3
+set [Enrollment Group]='Health Coaching' where EncounterCode=125060001
+update agerutshang.demo3
+set [Enrollment Group]='Technical Question' where EncounterCode=125060002
+update agerutshang.demo3
+set [Enrollment Group]='Administrative' where EncounterCode=125060003
+update agerutshang.demo3
+set [Enrollment Group]='Other' where EncounterCode=125060004
+update agerutshang.demo3
+set [Enrollment Group]='Lack of engagement' where EncounterCode=125060005
+
+select * into agerutshang.demo3 from PhoneCall 
+alter table agerutshang.demo3 add [Enrollment Group] nvarchar (225)
+select top 10 * from agerutshang.demo3
+update agerutshang.demo3
+set [Enrollment Group]='Clinical Alert' where EncounterCode=125060000
+update agerutshang.demo3
+set [Enrollment Group]='Health Coaching' where EncounterCode=125060001
+update agerutshang.demo3
+set [Enrollment Group]='Technical Question' where EncounterCode=125060002
+update agerutshang.demo3
+set [Enrollment Group]='Administrative' where EncounterCode=125060003
+update agerutshang.demo3
+set [Enrollment Group]='Other' where EncounterCode=125060004
+update agerutshang.demo3
+set [Enrollment Group]='Lack of engagement' where EncounterCode=125060005
+
+select * into agerutshang.demo2
+from agerutshang.demo4 A
+inner join 
+agerutshang.demo3 B
+on A.tri_CustomerIDEntityReference=B.CustomerId
+select top 10 * from agerutshang.demo2
+
+select * into agerutshang.demo2
+from agerutshang.demo4 A
+inner join 
+agerutshang.demo3 B
+on A.tri_CustomerIDEntityReference=B.CustomerId
+select top 10 * from agerutshang.demo2
+
+select sum (CallDuration) as TotalDuration
+from agerutshang.demo2
+where [Enrollment Group]='Clinical Alert'
+select sum (CallDuration) as TotalDuration
+from agerutshang.demo2
+where [Enrollment Group]='Health Coaching'
+select sum (CallDuration) as TotalDuration
+from agerutshang.demo2
+where [Enrollment Group]='Technical Question'
+select sum (CallDuration) as TotalDuration
+from agerutshang.demo2
+where [Enrollment Group]='Administrative'
+select sum (CallDuration) as TotalDuration
+from agerutshang.demo2
+where [Enrollment Group]='Other'
+select sum (CallDuration) as TotalDuration
+from agerutshang.demo2
+where [Enrollment Group]='Lack of engagement'
+
+select * into agerutshang.demo from Demographics
+select* into agerutshang.demo5 from [Text]
+select * into agerutshang.demo6 from ChronicConditions
+
+select A.*,B.*,C.* into agerutshang.demo9
+from agerutshang.demo A
+inner JOIN
+agerutshang.demo5 B on A.contactid =B.tri_contactId 
+inner join 
+agerutshang.demo6 C
+on A.contactid= C.tri_patientid
+
+select distinct SenderName from agerutshang.demo9
+
+select count(SenderName) from agerutshang.demo9
+where SenderName='System'
+select max (TextSentDate) value from agerutshang.demo9
+where SenderName='System'
+select min (TextSentDate) value from agerutshang.demo9
+where SenderName='System'
+select datediff(week,'2016/03/21','2017/02/03')
+
+select count(SenderName) from agerutshang.demo9
+where SenderName='Customer'
+select max (TextSentDate) value from agerutshang.demo9
+where SenderName='Customer'
+select min (TextSentDate) value from agerutshang.demo9
+where SenderName='Customer'
+select datediff(week,'2016/03/01','2017/02/03')
+
+select count(SenderName) from agerutshang.demo9
+where SenderName='Clinician'
+select max (TextSentDate) value from agerutshang.demo9
+where SenderName='Clinician'
+select min (TextSentDate) value from agerutshang.demo9
+where SenderName='Clinician'
+select datediff(week,'2016/02/07','2017/02/03')
+
+select distinct tri_name from agerutshang.demo9
+
+select count(TextSentDate) from agerutshang.demo9
+where tri_name='Activity Monitoring'
+select max (TextSentDate) value from agerutshang.demo9
+where tri_name='Activity Monitoring'
+select min (TextSentDate) value from agerutshang.demo9
+where tri_name='Activity Monitoring'
+select datediff(week,'2016/02/07','2017/02/03')
+
+ select count(TextSentDate) from agerutshang.demo9
+where tri_name='COPD'
+select max (TextSentDate) value from agerutshang.demo9
+where tri_name='COPD'
+select min (TextSentDate) value from agerutshang.demo9
+where tri_name='COPD'
+select datediff(week,'2016/03/03','2017/02/03')
+
+select count(TextSentDate) from agerutshang.demo9
+where tri_name='Diabetes'
+select max (TextSentDate) value from agerutshang.demo9
+where tri_name='Diabetes'
+select min (TextSentDate) value from agerutshang.demo9
+where tri_name='Diabetes'
+select datediff(week,'2016/03/07','2017/02/03')
+
+select count(TextSentDate) from agerutshang.demo9
+where tri_name='Hypertension'
+select max (TextSentDate) value from agerutshang.demo9
+where tri_name='Hypertension'
+select min (TextSentDate) value from agerutshang.demo9
+where tri_name='Hypertension'
+select datediff(week,'2016/03/02','2017/02/03')
+
+select count(TextSentDate) from agerutshang.demo9
+where tri_name='Congestive Heart Failure'
+select max (TextSentDate) value from agerutshang.demo9
+where tri_name='Congestive Heart Failure'
+select min (TextSentDate) value from agerutshang.demo9
+where tri_name='Congestive Heart Failure'
+select datediff(week,'2016/03/15','2017/02/03')
+
+
+

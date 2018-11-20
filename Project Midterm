@@ -468,4 +468,3 @@ group by diabetes_eyeproblemORretinopathy
 delete from agerutshang.midtermtable 
 where DoctorDiagnosedDiabetes='no' 
 and currentInsulinuse='no' and HealthRiskforDiabetes='NA' 
-

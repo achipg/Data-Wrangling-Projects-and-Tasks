@@ -61,8 +61,4 @@ update agerutshang.demo2
 set AgeGroup='>90' where Age>90
 select top 10 * from agerutshang.demo2 where Daysforcompletion is not NULL
 
-
-
-
-
  

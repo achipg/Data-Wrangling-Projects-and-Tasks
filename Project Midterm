@@ -1,5 +1,4 @@
 Code in R: 
-
 install.packages("Hmisc")
 install.packages("SASxport")
 library(SASxport)
@@ -7,7 +6,6 @@ library (plyr)
 library(dplyr)
 table<-read.xport("DIQ_I.XPT")
 write.csv(table,"sqlmidterm.csv")
-
 
 colnames(table)[colnames(table)=="SEQN"] <- "respondersequencenumber"
 colnames(table)[colnames(table)=="DIQ010"] <- "DoctorDiagnosedDiabetes"
@@ -157,3 +155,317 @@ labels = c("Family history",
 "doctor warning","other,specify","gestational diabetes",
 "frequent urination","thirst","craving sweet/eating lots of sugar",
 "medication","PCOS"))
+
+Code in SQL: 
+sp_rename 'agerutshang.midtermtable.[SEQN]','respondersequencenumber','COLUMN'
+sp_rename 'agerutshang.midtermtable.[DIQ010]','DoctorDiagnosedDiabetes','COLUMN'
+sp_rename 'agerutshang.midtermtable.[DID040]','Age_Diagnosis'
+sp_rename 'agerutshang.midtermtable.[DIQ160]','Prediabetes_diagnosis'
+sp_rename 'agerutshang.midtermtable.[DIQ170]','HealthRiskforDiabetes'
+sp_rename 'agerutshang.midtermtable.[DIQ172]','FeelAtRisk'
+sp_rename 'agerutshang.midtermtable.[DIQ180]','bloodtest3years'
+sp_rename 'agerutshang.midtermtable.[DIQ050]','currentInsulinuse'
+sp_rename 'agerutshang.midtermtable.[DID060]','TimetakingInsulin'
+sp_rename 'agerutshang.midtermtable.[DIQ060U]','unitmeasure'
+sp_rename 'agerutshang.midtermtable.[DIQ070]','medsforbloodsugar'
+sp_rename 'agerutshang.midtermtable.[DIQ230]','timeSinceDiab_specialistvisit'
+sp_rename 'agerutshang.midtermtable.[DIQ240]','OneDoctorforDiabetes'
+sp_rename 'agerutshang.midtermtable.[DID250]','dr_visitsinpastyear'
+sp_rename 'agerutshang.midtermtable.[DID260]','timesbloodsugarchecked'
+sp_rename 'agerutshang.midtermtable.[DIQ260U]','unitmeasureforbloodsugarcheck'
+sp_rename 'agerutshang.midtermtable.[DIQ275]','dr_checkA1Cpastyear'
+sp_rename 'agerutshang.midtermtable.[DIQ280]','lastA1Clevel'
+sp_rename 'agerutshang.midtermtable.[DIQ291]','dr_recommendedA1C'
+sp_rename 'agerutshang.midtermtable.[DIQ300S]','recentSBP'
+sp_rename 'agerutshang.midtermtable.[DIQ300D]','recentDBP'
+sp_rename 'agerutshang.midtermtable.[DID310S]','dr_recommendedSBP'
+sp_rename 'agerutshang.midtermtable.[DID310D]','dr_recommendedDBP'
+sp_rename 'agerutshang.midtermtable.[DID320]','latestLDLnumber'
+sp_rename 'agerutshang.midtermtable.[DID330]','dr_recommendedLDL'
+sp_rename 'agerutshang.midtermtable.[DID341]','drcheckforfeetsore_pastyear'
+sp_rename 'agerutshang.midtermtable.[DID350]','timesSelfcheckfeet'
+sp_rename 'agerutshang.midtermtable.[DIQ350U]','unitmeasure_feetcheck'
+sp_rename 'agerutshang.midtermtable.[DIQ360]','latestpupildilationduringexam'
+sp_rename 'agerutshang.midtermtable.[DIQ080]','diabetes_eyeproblemORretinopathy'
+
+alter table agerutshang.midtermtable alter column respondersequencenumber nvarchar(50)
+alter table agerutshang.midtermtable alter column DoctorDiagnosedDiabetes nvarchar(50)
+
+update agerutshang.midtermtable
+set DoctorDiagnosedDiabetes='yes' where DoctorDiagnosedDiabetes='1'
+update agerutshang.midtermtable
+set DoctorDiagnosedDiabetes='no' where DoctorDiagnosedDiabetes='2'
+update agerutshang.midtermtable
+set DoctorDiagnosedDiabetes='Borderline' where DoctorDiagnosedDiabetes='3'
+update agerutshang.midtermtable
+set DoctorDiagnosedDiabetes='refused' where DoctorDiagnosedDiabetes='7'
+update agerutshang.midtermtable
+set DoctorDiagnosedDiabetes='Do not know' where DoctorDiagnosedDiabetes='9'
+
+--update factor values for all other columns 
+update agerutshang.midtermtable
+set Prediabetes_diagnosis='yes' where Prediabetes_diagnosis='1'
+update agerutshang.midtermtable
+set Prediabetes_diagnosis='no' where Prediabetes_diagnosis='2'
+update agerutshang.midtermtable
+set Prediabetes_diagnosis='Refused' where Prediabetes_diagnosis='7'
+update agerutshang.midtermtable
+set Prediabetes_diagnosis='Do not now' where Prediabetes_diagnosis='9'
+
+update agerutshang.midtermtable
+set HealthRiskforDiabetes='yes' where HealthRiskforDiabetes='1'
+update agerutshang.midtermtable
+set HealthRiskforDiabetes='no' where HealthRiskforDiabetes='2'
+update agerutshang.midtermtable
+set HealthRiskforDiabetes='Refused' where HealthRiskforDiabetes='7'
+update agerutshang.midtermtable
+set HealthRiskforDiabetes='Do not know' where HealthRiskforDiabetes='9'
+
+update agerutshang.midtermtable
+set FeelAtRisk='yes' where FeelAtRisk='1'
+update agerutshang.midtermtable
+set FeelAtRisk='no' where FeelAtRisk='2'
+update agerutshang.midtermtable
+set FeelAtRisk='Refused' where FeelAtRisk='7'
+update agerutshang.midtermtable
+set FeelAtRisk='Do not know' where FeelAtRisk='9'
+
+update agerutshang.midtermtable
+set DIQ175A='family history' where DIQ175A='10'
+update agerutshang.midtermtable
+set DIQ175A='Refused' where DIQ175A='77'
+update agerutshang.midtermtable
+set DIQ175A='Do not know' where DIQ175A='99'
+sp_rename 'agerutshang.midtermtable.[DIQ175A]','FamilyHistory'
+
+update agerutshang.midtermtable
+set DIQ175B='Overweight' where DIQ175B='11'
+sp_rename 'agerutshang.midtermtable.[DIQ175B]','Overweight'
+
+update agerutshang.midtermtable
+set DIQ175C='Age' where DIQ175C='12'
+sp_rename 'agerutshang.midtermtable.[DIQ175C]','Age'
+
+update agerutshang.midtermtable
+set DIQ175D='PoorD iet' where DIQ175D='13'
+sp_rename 'agerutshang.midtermtable.[DIQ175D]','PoorDiet'
+
+update agerutshang.midtermtable
+set DIQ175E='Race' where DIQ175A='14'
+sp_rename 'agerutshang.midtermtable.[DIQ175E]','Race'
+
+update agerutshang.midtermtable
+set DIQ175F='had baby over 9lbs at birth' where DIQ175F='15'
+sp_rename 'agerutshang.midtermtable.[DIQ175F]','baby>9lbsatbirth'
+
+update agerutshang.midtermtable
+set DIQ175G='lack of physical activity' where DIQ175G='16'
+sp_rename 'agerutshang.midtermtable.[DIQ175G]','PhysicalActivity'
+
+update agerutshang.midtermtable
+set DIQ175H='High BP' where DIQ175H='17'
+sp_rename 'agerutshang.midtermtable.[DIQ175H]','HighBP'
+
+update agerutshang.midtermtable
+set DIQ175I='High blood sugar' where DIQ175I='18'
+sp_rename 'agerutshang.midtermtable.[DIQ175I]','Highbloodsugar'
+
+update agerutshang.midtermtable
+set DIQ175J='High cholesterol' where DIQ175J='19'
+sp_rename 'agerutshang.midtermtable.[DIQ175J]','HighCholesterol'
+
+update agerutshang.midtermtable
+set DIQ175K='Hypoglycemic' where DIQ175K='20'
+sp_rename 'agerutshang.midtermtable.[DIQ175K]','Hypoglycemic'
+
+update agerutshang.midtermtable
+set DIQ175L='Extreme Hunger' where DIQ175L='21'
+sp_rename 'agerutshang.midtermtable.[DIQ175L]','ExtremeHunger'
+
+update agerutshang.midtermtable
+set DIQ175M='Tingling/numbness in hands & feet' where DIQ175M='22'
+sp_rename 'agerutshang.midtermtable.[DIQ175M]','Tingling_numbnessHands&feet'
+
+update agerutshang.midtermtable
+set DIQ175N='Blurred vision' where DIQ175N='23'
+sp_rename 'agerutshang.midtermtable.[DIQ175N]','BlurredVision'
+
+update agerutshang.midtermtable
+set DIQ175O='Increased Fatigue' where DIQ175O='24'
+sp_rename 'agerutshang.midtermtable.[DIQ175O]','IncreasedFatigue'
+
+update agerutshang.midtermtable
+set DIQ175P='Anyone could be at risk' where DIQ175P='25'
+sp_rename 'agerutshang.midtermtable.[DIQ175P]','AnyoneatRisk'
+
+update agerutshang.midtermtable
+set DIQ175Q='Doctor Warning' where DIQ175Q='26'
+sp_rename 'agerutshang.midtermtable.[DIQ175Q]','DoctorWarning'
+
+update agerutshang.midtermtable
+set DIQ175R='Other, specify' where DIQ175R='27'
+sp_rename 'agerutshang.midtermtable.[DIQ175R]','Other'
+
+update agerutshang.midtermtable
+set DIQ175S='gestational diabetes' where DIQ175S='28'
+sp_rename 'agerutshang.midtermtable.[DIQ175S]','GestationalDiabetes'
+
+update agerutshang.midtermtable
+set DIQ175T='Frequent urination' where DIQ175T='29'
+sp_rename 'agerutshang.midtermtable.[DIQ175T]','FrequentUrination'
+
+update agerutshang.midtermtable
+set DIQ175U='Thirst' where DIQ175U='30'
+sp_rename 'agerutshang.midtermtable.[DIQ175U]','Thirst'
+
+update agerutshang.midtermtable
+set DIQ175V='Craving sweet/eating a lot of sugar' where DIQ175V='31'
+sp_rename 'agerutshang.midtermtable.[DIQ175V]','Cravingsweet_eatingsugar'
+
+update agerutshang.midtermtable
+set DIQ175W='Medication' where DIQ175W='32'
+sp_rename 'agerutshang.midtermtable.[DIQ175W]','Medication'
+
+update agerutshang.midtermtable
+set DIQ175X='PCOS' where DIQ175X='33'
+sp_rename 'agerutshang.midtermtable.[DIQ175X]','PCOS'
+
+
+update agerutshang.midtermtable
+set bloodtest3years='yes' where bloodtest3years='1'
+update agerutshang.midtermtable
+set bloodtest3years='no' where bloodtest3years='2'
+update agerutshang.midtermtable
+set bloodtest3years='Refused' where bloodtest3years='7'
+update agerutshang.midtermtable
+set bloodtest3years='Do not know' where bloodtest3years='9'
+
+alter table agerutshang.midtermtable alter column currentInsulinUse nvarchar(50)
+
+update agerutshang.midtermtable
+set currentInsulinUse='yes' where currentInsulinUse='1'
+update agerutshang.midtermtable
+set currentInsulinUse='no' where currentInsulinUse='2'
+update agerutshang.midtermtable
+set currentInsulinUse='Refused' where currentInsulinUse='7'
+update agerutshang.midtermtable
+set currentInsulinUse='Do not know' where currentInsulinUse='9'
+
+update agerutshang.midtermtable
+set medsforbloodsugar='yes' where medsforbloodsugar='1'
+update agerutshang.midtermtable
+set medsforbloodsugar='no' where medsforbloodsugar='2'
+update agerutshang.midtermtable
+set medsforbloodsugar='Refused' where medsforbloodsugar='7'
+update agerutshang.midtermtable
+set medsforbloodsugar='Do not know' where medsforbloodsugar='9' 
+
+update agerutshang.midtermtable
+set OneDoctorforDiabetes='yes' where OneDoctorforDiabetes='1'
+update agerutshang.midtermtable
+set OneDoctorforDiabetes='no' where OneDoctorforDiabetes='2'
+update agerutshang.midtermtable
+set OneDoctorforDiabetes='Refused' where OneDoctorforDiabetes='7'
+update agerutshang.midtermtable
+set OneDoctorforDiabetes='Missing' where OneDoctorforDiabetes='9'
+
+update agerutshang.midtermtable
+set dr_checkA1Cpastyear='yes' where dr_checkA1Cpastyear='1'
+update agerutshang.midtermtable
+set dr_checkA1Cpastyear='no' where dr_checkA1Cpastyear='2'
+update agerutshang.midtermtable
+set dr_checkA1Cpastyear='Refused' where dr_checkA1Cpastyear='7'
+update agerutshang.midtermtable
+set dr_checkA1Cpastyear='Do not know' where dr_checkA1Cpastyear='9'
+
+update agerutshang.midtermtable
+set dr_recommendedA1C='Less than 6' where dr_recommendedA1C='1'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Less than 7' where dr_recommendedA1C='2'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Less than 8' where dr_recommendedA1C='3'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Less than 9' where dr_recommendedA1C='4'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Less than 10' where dr_recommendedA1C='5'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Provider did not specify goal' where dr_recommendedA1C='6'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Refused' where dr_recommendedA1C='77'
+update agerutshang.midtermtable
+set dr_recommendedA1C='Do not know' where dr_recommendedA1C='99'
+
+
+update agerutshang.midtermtable
+set latestpupildilationduringexam='<1 month' where latestpupildilationduringexam='1'
+update agerutshang.midtermtable
+set latestpupildilationduringexam='<1-12 months' where latestpupildilationduringexam='2'
+update agerutshang.midtermtable
+set latestpupildilationduringexam='<13-24 months' where latestpupildilationduringexam='3'
+update agerutshang.midtermtable
+set latestpupildilationduringexam='>2 years' where latestpupildilationduringexam='4'
+update agerutshang.midtermtable
+set latestpupildilationduringexam='Never' where latestpupildilationduringexam='5'
+update agerutshang.midtermtable
+set latestpupildilationduringexam='Refused' where latestpupildilationduringexam='7'
+update agerutshang.midtermtable
+set latestpupildilationduringexam='Do not know' where latestpupildilationduringexam='9'
+
+update agerutshang.midtermtable
+set diabetes_eyeproblemORretinopathy='yes' where diabetes_eyeproblemORretinopathy='1'
+update agerutshang.midtermtable
+set diabetes_eyeproblemORretinopathy='no' where diabetes_eyeproblemORretinopathy='2'
+update agerutshang.midtermtable
+set diabetes_eyeproblemORretinopathy='Refused' where diabetes_eyeproblemORretinopathy='7'
+update agerutshang.midtermtable
+set diabetes_eyeproblemORretinopathy='Do not know' where diabetes_eyeproblemORretinopathy='9'
+
+update agerutshang.midtermtable
+set TimetakingInsulin=12*(TimetakingInsulin) where unitmeasure='2'
+
+update agerutshang.midtermtable
+set timesSelfcheckfeet=(365*(timesSelfcheckfeet)) where unitmeasure_feetcheck='1'
+update agerutshang.midtermtable
+set timesSelfcheckfeet=(52.143*(timesSelfcheckfeet)) where unitmeasure_feetcheck='2'
+update agerutshang.midtermtable
+set timesSelfcheckfeet=(12*(timesSelfcheckfeet)) where unitmeasure_feetcheck='3'
+
+update agerutshang.midtermtable
+set timesbloodsugarchecked=(365*(timesbloodsugarchecked)) where unitmeasureforbloodsugarcheck='1'
+update agerutshang.midtermtable
+set timesbloodsugarchecked=(52.143*(timesbloodsugarchecked)) where unitmeasureforbloodsugarcheck='2'
+update agerutshang.midtermtable
+set timesbloodsugarchecked=(12*(timesbloodsugarchecked)) where unitmeasureforbloodsugarcheck='3'
+
+alter table agerutshang.midtermtable
+drop column unitmeasure
+
+alter table agerutshang.midtermtable
+drop column unitmeasureforbloodsugarcheck
+
+alter table agerutshang.midtermtable
+drop column unitmeasure_feetcheck
+
+sp_RENAME 'agerutshang.midtermtable.TimetakingInsulin','TimetakingInsulin_months','COLUMN'
+sp_RENAME 'agerutshang.midtermtable.timesbloodsugarchecked','Timesbloodsugarcheck_peryear','COLUMN'
+sp_RENAME 'agerutshang.midtermtable.timesSelfcheckfeet','timesSelfcheckfeet_peryear','COLUMN'
+
+select DoctorDiagnosedDiabetes, count (*) as 'count' from agerutshang.midtermtable 
+group by DoctorDiagnosedDiabetes
+
+select Prediabetes_diagnosis, count (*) as 'count' from agerutshang.midtermtable 
+group by Prediabetes_diagnosis
+
+select HealthRiskforDiabetes, count (*) as 'count' from agerutshang.midtermtable
+group by HealthRiskforDiabetes
+
+select latestpupildilationduringexam, count (*) as 'count' from agerutshang.midtermtable
+group by latestpupildilationduringexam
+
+select diabetes_eyeproblemORretinopathy, count (*) as 'count' from agerutshang.midtermtable
+group by diabetes_eyeproblemORretinopathy
+
+delete from agerutshang.midtermtable 
+where DoctorDiagnosedDiabetes='no' 
+and currentInsulinuse='no' and HealthRiskforDiabetes='NA' 
+

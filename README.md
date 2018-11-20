@@ -1,9 +1,11 @@
-# Data-Wrangling-Projects-and-Tasks
+# Data Wrangling Projects and Tasks
 
 The purpose of this repository is to share the projects that I have completed in my Data Wrangling course this semester.
 
+# Overview
 The codes presented in this repository have been approved for sharing by the instructor for this course. 
 
+# Description of subdirectories
 The following content briefly lists the tasks that were completed in each individual project. 
 
 Project #1 in SQL: 

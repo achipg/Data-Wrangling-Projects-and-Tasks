@@ -1,3 +1,4 @@
+SQL CODE:
 select * into agerutshang.demo3 from PhoneCall 
 alter table agerutshang.demo3 add [Enrollment Group] nvarchar (225)
 select top 10 * from agerutshang.demo3
